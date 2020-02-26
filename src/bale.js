@@ -4,7 +4,7 @@ require('array.prototype.findindex').shim(); // for Node.js v0.x
 const errors = require('./errors');
 const TelegramBotWebHook = require('./telegramWebHook');
 const TelegramBotPolling = require('./telegramPolling');
-const debug = require('debug')('node-telegram-bot-api');
+const debug = require('debug')('node-bale-bot-api');
 const EventEmitter = require('eventemitter3');
 const fileType = require('file-type');
 const request = require('request-promise');
@@ -16,7 +16,7 @@ const path = require('path');
 const URL = require('url');
 const fs = require('fs');
 const pump = require('pump');
-const deprecate = require('depd')('node-telegram-bot-api');
+const deprecate = require('depd')('node-bale-bot-api');
 let Promise = require('bluebird');
 
 const _messageTypes = [
@@ -686,6 +686,24 @@ class TelegramBot extends EventEmitter {
   }
 
   /**
+   * Use this method to edit text messages sent by the bot or via
+   * the bot (for inline bots).
+   * 
+   * @param  {Number|String} chatId Unique identifier for the message recipient
+   * @param  {Number|String} messageId Unique identifier for the message
+   * @param  {String} text Text of the message to be sent
+   * @param  {Object} [options] Additional Telegram query options
+   * @return {Promise}
+   * @see https://devbale.ir/api#operation/editMessageText
+   */
+  editMessage(chatId, messageId, text, form = {}) {
+    form.chat_id = chatId;
+    form.message_id = messageId;
+    form.text = text;
+    return this._request('editMessageText', { form });
+  }
+
+  /**
    * Send answers to an inline query.
    * @param  {String} inlineQueryId Unique identifier of the query
    * @param  {InlineQueryResult[]} results An array of results for the inline query
@@ -1181,7 +1199,7 @@ class TelegramBot extends EventEmitter {
     return this._request('answerCallbackQuery', { form });
   }
 
-  /**
+  /* *
    * Use this method to edit text messages sent by the bot or via
    * the bot (for inline bots). On success, the edited Message is
    * returned.
@@ -1193,13 +1211,13 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options (provide either one of chat_id, message_id, or inline_message_id here)
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagetext
-   */
   editMessageText(text, form = {}) {
     form.text = text;
     return this._request('editMessageText', { form });
   }
+   */
 
-  /**
+  /* *
    * Use this method to edit captions of messages sent by the
    * bot or via the bot (for inline bots). On success, the
    * edited Message is returned.
@@ -1211,13 +1229,13 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options (provide either one of chat_id, message_id, or inline_message_id here)
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagecaption
-   */
   editMessageCaption(caption, form = {}) {
     form.caption = caption;
     return this._request('editMessageCaption', { form });
   }
+   */
 
-  /**
+  /* *
    * Use this method to edit audio, document, photo, or video messages.
    * If a message is a part of a message album, then it can be edited only to a photo or a video.
    * Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded.
@@ -1231,13 +1249,13 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options (provide either one of chat_id, message_id, or inline_message_id here)
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagemedia
-   */
   editMessageMedia(media, form = {}) {
     form.media = stringify(media);
     return this._request('editMessageMedia', { form });
   }
+   */
 
-  /**
+  /* *
    * Use this method to edit only the reply markup of messages
    * sent by the bot or via the bot (for inline bots).
    * On success, the edited Message is returned.
@@ -1249,11 +1267,11 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options (provide either one of chat_id, message_id, or inline_message_id here)
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagetext
-   */
   editMessageReplyMarkup(replyMarkup, form = {}) {
     form.reply_markup = replyMarkup;
     return this._request('editMessageReplyMarkup', { form });
   }
+   */
 
   /**
    * Use this method to get a list of profile pictures for a user.
@@ -1301,7 +1319,7 @@ class TelegramBot extends EventEmitter {
     return this._request('sendLocation', { form });
   }
 
-  /**
+  /* *
    * Use this method to edit live location messages sent by
    * the bot or via the bot (for inline bots).
    *
@@ -1313,12 +1331,12 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options (provide either one of chat_id, message_id, or inline_message_id here)
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagelivelocation
-   */
   editMessageLiveLocation(latitude, longitude, form = {}) {
     form.latitude = latitude;
     form.longitude = longitude;
     return this._request('editMessageLiveLocation', { form });
   }
+   */
 
   /**
    * Use this method to stop updating a live location message sent by
