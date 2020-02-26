@@ -189,7 +189,7 @@ class TelegramBot extends EventEmitter {
     this.options = options;
     this.options.polling = (typeof options.polling === 'undefined') ? false : options.polling;
     this.options.webHook = (typeof options.webHook === 'undefined') ? false : options.webHook;
-    this.options.baseApiUrl = options.baseApiUrl || 'https://api.telegram.org';
+    this.options.baseApiUrl = options.baseApiUrl || 'https://tapi.bale.ai';
     this.options.filepath = (typeof options.filepath === 'undefined') ? true : options.filepath;
     this.options.badRejection = (typeof options.badRejection === 'undefined') ? false : options.badRejection;
     this._textRegexpCallbacks = [];
@@ -370,6 +370,18 @@ class TelegramBot extends EventEmitter {
         },
       },
     }, null];
+  }
+
+  /**
+   * Manual polling.
+   * Rejects returned promise if a WebHook is being used by this instance.
+   * @return {Promise}
+   */
+  manualPolling() {
+    if (!this._polling) {
+      this._polling = new TelegramBotPolling(this);
+    }
+    return this._polling.manualPolling();
   }
 
   /**

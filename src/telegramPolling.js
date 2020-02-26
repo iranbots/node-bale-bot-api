@@ -28,6 +28,15 @@ class TelegramBotPolling {
   }
 
   /**
+   * Manual polling
+   * @param  {Object} [options]
+   * @return {Promise}
+   */
+  manualPolling() {
+    return this._polling(true);
+  }
+
+  /**
    * Start polling
    * @param  {Object} [options]
    * @param  {Object} [options.restart]
@@ -97,7 +106,7 @@ class TelegramBotPolling {
    * @return {Promise} promise of the current request
    * @private
    */
-  _polling() {
+  _polling(manual=false) {
     this._lastRequest = this
       ._getUpdates()
       .then(updates => {
@@ -163,9 +172,12 @@ class TelegramBotPolling {
       .finally(() => {
         if (this._abort) {
           debug('Polling is aborted!');
-        } else {
+        } else if(!manual) {
           debug('setTimeout for %s miliseconds', this.options.interval);
           this._pollingTimeout = setTimeout(() => this._polling(), this.options.interval);
+        } else {
+          debug('Manual Polling!');
+          console.log('Manual Polling!');
         }
       });
     return this._lastRequest;

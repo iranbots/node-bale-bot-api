@@ -1006,6 +1006,8 @@ declare namespace TelegramBot {
 declare class TelegramBot extends EventEmitter {
     constructor(token: string, options?: TelegramBot.ConstructorOptions);
 
+    manualPolling(): Promise<any>;
+
     startPolling(options?: TelegramBot.StartPollingOptions): Promise<any>;
 
     stopPolling(options?: TelegramBot.StopPollingOptions): Promise<any>;
